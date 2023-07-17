@@ -1,7 +1,7 @@
 import User from "../models/user.model.js"
 
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
 
     const { username, email, password, name, lastname, phone, photo = "photo.jpg" } = req.body
 
@@ -44,7 +44,8 @@ export const register = async (req, res) => {
 
 
     } catch (error) {
-
+        console.log(error)
+        next(error)
     }
 
 }

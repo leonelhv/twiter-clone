@@ -3,6 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+//Midlewares
+import ErrorHandler from '../middlewares/ErrorHandler.js';
+
+
 //Routes
 import authRoutes from "../routes/auth.routes.js"
 
@@ -19,6 +23,8 @@ app.get("/", (_, res) => {
 });
 
 app.use("/api", authRoutes)
+app.use(ErrorHandler())
+
 
 
 export default app
