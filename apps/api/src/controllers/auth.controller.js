@@ -3,6 +3,7 @@ const User = require("../models/user.model.js");
 const responseCustom = require("../utils/response.js");
 const createAccessToken = require("../libs/jwt.js");
 const { ErrorCustom } = require("../utils/ErrorCustom.js");
+const randomRange = require("../utils/randomRange.js");
 
 
 const register = async (req, res) => {
@@ -30,6 +31,8 @@ const register = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10)
 
+    const randomNumber = randomRange(1, 3)
+
     const newUser = new User({
         username,
         email,
@@ -37,7 +40,7 @@ const register = async (req, res) => {
         name,
         lastname,
         phone,
-        photo
+        photo: `assets/${randomNumber}.png`
     })
 
     const userSaved = await newUser.save();
