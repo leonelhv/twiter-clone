@@ -1,14 +1,15 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
+const dotenv = require("dotenv")
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 //Midlewares
-import ErrorHandler from '../middlewares/ErrorHandler.js';
+const ErrorHandler = require("../middlewares/ErrorHandler.js")
 
 
 //Routes
-import authRoutes from "../routes/auth.routes.js"
+const authRoutes = require("../routes/auth.routes.js")
+
 
 const app = express()
 app.use(cors())
@@ -18,13 +19,15 @@ dotenv.config()
 
 
 
+
 app.get("/", (_, res) => {
     res.json({ message: "Welcome to backend Twitter Clone." });
 });
 
+
 app.use("/api", authRoutes)
-app.use(ErrorHandler())
+app.use(ErrorHandler)
 
 
 
-export default app
+module.exports = app;

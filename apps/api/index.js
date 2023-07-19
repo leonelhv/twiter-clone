@@ -1,6 +1,7 @@
 
-import app from "./src/config/app.js"
-import { connectDB } from "./src/config/db.js"
+const app = require("./src/config/app.js");
+const connectDB = require("./src/config/db.js")
+
 const PORT = process.env.PORT || 3000;
 
 connectDB();
