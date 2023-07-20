@@ -13,4 +13,15 @@ function createAccessToken (payload) {
 
 }
 
-module.exports = createAccessToken
+function verifyAccessToken (token) {
+
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+            if (err) reject(err)
+            resolve(payload)
+        })
+    })
+
+}
+
+module.exports = { createAccessToken, verifyAccessToken }

@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model.js");
 const responseCustom = require("../utils/response.js");
-const createAccessToken = require("../libs/jwt.js");
+const { createAccessToken } = require("../libs/jwt.js");
 const { ErrorCustom } = require("../utils/ErrorCustom.js");
 const randomRange = require("../utils/randomRange.js");
 
@@ -74,6 +74,7 @@ const login = async (req, res) => {
 
 
     const token = await createAccessToken({ id: userFound._id })
+
 
     res.cookie('token', token)
 
