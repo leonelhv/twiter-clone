@@ -1,0 +1,15 @@
+<svg
+  aria-hidden="true"
+  focusable="false"
+  data-prefix="fas"
+  data-icon="retweet"
+  class="svg-inline--fa fa-retweet fa-w-16"
+  role="img"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 640 512"
+>
+  <path
+    fill="currentColor"
+    d="M256 248c8.8 0 16-7.2 16-16V72c0-13.3 10.7-24 24-24h192c35.3 0 64 28.7 64 64v192c0 35.3-28.7 64-64 64H232c-35.3 0-64-28.7-64-64v-40c0-8.8 7.2-16 16-16s16 7.2 16 16v40c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32V120c0-17.7-14.3-32-32-32H296c-8.8 0-16-7.2-16-16s7.2-16 16-16h192c35.3 0 64 28.7 64 64v160c0 35.3-28.7 64-64 64H280c-35.3 0-64-28.7-64-64v-40c0-8.8 7.2-16 16-16z"
+  ></path>
+</svg>
