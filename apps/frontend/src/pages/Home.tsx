@@ -78,7 +78,7 @@ export default function Home () {
             </div>
             {isModalOpen && <Modal closeModal={closeModal}>
                 {nameForm === forms.signup && <FormSignUp closeModal={closeModal} />}
-                {nameForm === forms.signin && <FormSignIn />}
+                {nameForm === forms.signin && <FormSignIn closeModal={closeModal} />}
             </Modal>}
         </>
     )

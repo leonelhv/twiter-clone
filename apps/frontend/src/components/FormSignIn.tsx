@@ -16,11 +16,15 @@ interface Response {
     result?: { [key: string]: string };
 }
 
-export default function FormSignIn () {
+interface Props {
+    closeModal: () => void
+}
+
+export default function FormSignIn ({ closeModal }: Props) {
 
     const cookies = new Cookies();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
+    const { register, reset, handleSubmit, formState: { errors } } = useForm<Inputs>()
 
     const [msgError, setMsgError] = useState<string>()
 
@@ -28,6 +32,8 @@ export default function FormSignIn () {
         apiClient.post('/login', data).then((res: AxiosResponse<Response>) => {
             const { result } = res.data
             cookies.set('user', result, { path: '/' })
+            reset()
+            closeModal()
         }).catch(() => {
             setMsgError("Credentials are not valid")
         })
