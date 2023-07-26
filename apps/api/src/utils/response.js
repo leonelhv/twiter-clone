@@ -7,7 +7,7 @@ const responseCustom = (res, statusCode, data) => {
     }
 
     if (success) {
-        response["data"] = data
+        response["result"] = data
     } else {
         response["errors"] = data
     }

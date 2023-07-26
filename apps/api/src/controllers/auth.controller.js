@@ -8,7 +8,7 @@ const randomRange = require("../utils/randomRange.js");
 
 const register = async (req, res) => {
 
-    const { username, email, password, name, lastname, phone, photo = "photo.jpg" } = req.body
+    const { username, email, password, name, lastname, phone } = req.body
 
     const errors = {};
 
@@ -58,7 +58,8 @@ const register = async (req, res) => {
     return responseCustom(res, 200, {
         id: userSaved._id,
         username: userSaved.username,
-        email: userSaved.email
+        email: userSaved.email,
+        photo: userFound.photo
 
     });
 }
@@ -76,12 +77,18 @@ const login = async (req, res) => {
     const token = await createAccessToken({ id: userFound._id })
 
 
-    res.cookie('token', token)
+    res.cookie("token", token, {
+        httpOnly: process.env.NODE_ENV !== "development",
+        secure: true,
+        sameSite: "none",
+
+    });
 
     responseCustom(res, 200, {
         id: userFound._id,
         username: userFound.username,
         email: userFound.email,
+        photo: userFound.photo
     })
 
 }
