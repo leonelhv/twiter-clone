@@ -1,29 +1,73 @@
+import { SubmitHandler, useForm } from "react-hook-form";
+import apiClient from "../axios/apiClient";
+import Cookies from 'universal-cookie';
+import { AxiosResponse } from "axios";
+import { useState } from "react";
 
+
+type Inputs = {
+    email: string
+    password: string
+}
+
+interface Response {
+    success: boolean,
+    status: number,
+    result?: { [key: string]: string };
+}
 
 export default function FormSignIn () {
+
+    const cookies = new Cookies();
+
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
+
+    const [msgError, setMsgError] = useState<string>()
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        apiClient.post('/login', data).then((res: AxiosResponse<Response>) => {
+            const { result } = res.data
+            cookies.set('user', result, { path: '/' })
+        }).catch(() => {
+            setMsgError("Credentials are not valid")
+        })
+    }
+
+
     return (
         <div className="container max-w-sm mx-auto">
-            <div className=" text-black w-full">
+            <form className=" text-black w-full" onSubmit={handleSubmit(onSubmit)}>
                 <h1 className="mb-8 text-3xl text-center">Sign In</h1>
-                <input
-                    type="text"
-                    className="block border border-grey-light w-full p-3 rounded mb-4"
-                    name="email"
-                    placeholder="Email" />
+                {
+                    msgError && <p className="text-sm text-red-700 text-center mb-2">{msgError}</p>
+                }
+                <div>
+                    <input
+                        type="text"
+                        className="block border border-grey-light w-full p-3 rounded mb-4"
+                        placeholder="Email"
+                        {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
+                    />
+                    {errors.email?.type === 'required' && <span className="text-sm text-red-700">Email is required</span>}
+                    {errors.email?.type === 'pattern' && <span className="text-sm text-red-700">Email is not valid</span>}
+                </div>
 
-                <input
-                    type="password"
-                    className="block border border-grey-light w-full p-3 rounded mb-4"
-                    name="password"
-                    placeholder="Password" />
+                <div>
+                    <input
+                        type="password"
+                        className="block border border-grey-light w-full p-3 rounded mb-4"
+                        placeholder="Password"
+                        {...register("password", { required: true })}
+                    />
+                    {errors.password?.type === 'required' && <span className="text-sm text-red-700">Password is required</span>}
+                </div>
 
                 <button
                     type="submit"
                     className="w-full bg-violet-900 text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1"
                 >Login</button>
 
-            </div>
-
+            </form>
 
         </div>
     )

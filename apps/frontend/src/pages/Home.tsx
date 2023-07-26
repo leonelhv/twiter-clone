@@ -1,12 +1,29 @@
 import { useState } from 'react';
-import logo from './assets/logo.svg';
-import Modal from './components/Modal';
-import { NewTweet } from './components/NewTweet';
-import Tweet from './components/Tweet';
+import logo from '../assets/logo.svg';
+import Modal from '../components/Modal';
+import { NewTweet } from '../components/NewTweet';
+import Tweet from '../components/Tweet';
+import FormSignUp from '../components/FormSignUp';
+import FormSignIn from '../components/FormSignIn';
 
-function App () {
+const forms = {
+    signup: "FormSignUp",
+    signin: "FormSignIn"
+}
+
+export default function Home () {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [nameForm, setNameForm] = useState('')
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
+    const openModal = (nameForm: string) => {
+        setIsModalOpen(true)
+        setNameForm(nameForm)
+    }
 
 
     return (
@@ -52,15 +69,17 @@ function App () {
                             <p className='text-2xl'>Don’t miss what’s happening</p>
                             <p className='text-gray-400'>People on Twitter are the first to know.</p>
                         </div>
-                        <div className='flex items-center'>
-                            <button className='border border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black' onClick={() => setIsModalOpen(true)}>Sign up</button>
+                        <div className='flex items-center gap-4'>
+                            <button className='border border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black' onClick={() => openModal(forms.signup)}>Sign Up</button>
+                            <button className='border bg-white text-black border-white px-3 py-2 rounded-2xl' onClick={() => openModal(forms.signin)}>Sign In</button>
                         </div>
                     </div>
                 </div>
             </div>
-            {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
+            {isModalOpen && <Modal closeModal={closeModal}>
+                {nameForm === forms.signup && <FormSignUp closeModal={closeModal} />}
+                {nameForm === forms.signin && <FormSignIn />}
+            </Modal>}
         </>
     )
 }
-
-export default App
