@@ -52,9 +52,11 @@ const register = async (req, res) => {
   });
 
   res.cookie("token", token, {
-    httpOnly: process.env.NODE_ENV !== "development",
-    secure: true,
-    sameSite: "none",
+    // httpOnly: process.env.NODE_ENV !== "development",
+    httpOnly: false,
+    secure: false,
+    // sameSite: "none",
+
   });
 
   return responseCustom(res, 200, {
@@ -81,9 +83,10 @@ const login = async (req, res) => {
 
 
   res.cookie("token", token, {
-    httpOnly: process.env.NODE_ENV !== "development",
-    secure: true,
-    sameSite: "none",
+    // httpOnly: process.env.NODE_ENV !== "development",
+    httpOnly: false,
+    secure: false,
+    // sameSite: "none",
 
   });
 

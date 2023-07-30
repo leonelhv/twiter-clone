@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import apiClient from "../axios/apiClient";
 
 const text_default = "what is happening?";
 
@@ -24,8 +25,11 @@ export const NewTweet = () => {
   const { register, reset, handleSubmit, formState: { errors } } = useForm<{ content: string }>()
 
   const onSubmit: SubmitHandler<{ content: string }> = (data) => {
-    console.log(data)
-    // reset()
+    apiClient.post('/tweet', data).then(() => {
+      reset()
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   return (
@@ -42,7 +46,7 @@ export const NewTweet = () => {
           value={content}
           {...register("content", { required: true })}
         />
-        <button className="bg-violet-900 text-white px-3 py-2 rounded-xl self-end disabled:opacity-50" disabled={true}>
+        <button className="bg-violet-900 text-white px-3 py-2 rounded-xl self-end">
           Tweet
         </button>
       </form>

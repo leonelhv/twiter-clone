@@ -1,21 +1,26 @@
+import { Itweet } from "../types/tweet"
+import { imageStatic } from "../utils/imageStatic"
 
+interface Props {
+  data: Itweet
+}
 
-export default function Tweet () {
+export default function Tweet ({ data }: Props) {
   return (
     <div className='flex w-full border-t-[.3px] p-4 border-gray-200/20'>
-      <div className=''>
-        <div className='w-12 h-12 bg-violet-900 rounded-full'></div>
+      <div className='w-12 h-12 rounded-full'>
+        <img src={imageStatic(data.userId.photo)} alt="" />
       </div>
       <div className='flex flex-col gap-1 w-[calc(100%-66px)] ml-4'>
 
         <div className='flex justify-between'>
           <div className='flex gap-2'>
-            <span className='text-white font-bold'>John Doe</span>
-            <span className='text-gray-400'>@johndoe</span>
+            <span className='text-white font-bold'>{data.userId.name}</span>
+            <span className='text-gray-400'>@{data.userId.username}</span>
           </div>
         </div>
 
-        <span className='text-white block'> Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia delectus fuga iste dolores quibusdam veritatis enim tempora odio 😄 cum aliquam, omnis nisi quae placeat itaque nesciunt provident! Illo, odit incidunt. </span>
+        <span className='text-white block'>{data.content}</span>
 
         <div className='flex justify-between text-white text-lg'>
 

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import logo from '../assets/logo.svg';
 import { NewTweet } from '../components/NewTweet';
-import Tweet from '../components/Tweet';
+
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { isLogged as logged, syncUser } from '../store/user/userSlice';
 import { getFromLocalStore } from '../utils/localStorage';
 import { UserState } from '../types/user';
 import AuthBanner from '../components/AuthBanner';
 import UserProfileCard from '../components/UserProfileCard';
+import ListTweets from '../components/ListTweets';
 
 
 
@@ -46,7 +47,7 @@ export default function Home () {
             </div>
             <div className='my-12 '>
               {isLogged && <NewTweet />}
-              <Tweet />
+              <ListTweets />
             </div>
           </div>
           <div className=' w-3/12 p-4'>
