@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import apiClient from "../axios/apiClient";
-import Cookies from 'universal-cookie';
 import { AxiosResponse } from "axios";
 import { useState } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { syncUser } from "../store/user/userSlice"
 import { UserState } from "../types/user";
+import { saveToLocalStore } from "../utils/localStorage";
 
 type Inputs = {
   email: string
@@ -24,8 +24,6 @@ interface Props {
 
 export default function FormSignIn ({ closeModal }: Props) {
 
-  const cookies = new Cookies();
-
   const dispatch = useAppDispatch()
 
   const { register, reset, handleSubmit, formState: { errors } } = useForm<Inputs>()
@@ -35,8 +33,8 @@ export default function FormSignIn ({ closeModal }: Props) {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     apiClient.post('/login', data).then((res: AxiosResponse<Response>) => {
       const { result } = res.data
-      cookies.set('user', result, { path: '/' })
       dispatch(syncUser(result))
+      saveToLocalStore('user', result)
       reset()
       closeModal()
     }).catch(() => {
