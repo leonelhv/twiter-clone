@@ -1,26 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Tweet from "./Tweet";
-import apiClient from "../axios/apiClient";
-import { AxiosResponse } from "axios";
+import { getListTweets } from "../services/tweet.service";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { addArrayTweetToList } from "../store/tweet/tweetSlice";
 import { Itweet } from "../types/tweet";
 
 
-interface Response {
-  success: boolean;
-  status: number;
-  result: Itweet[];
-}
 
 
 export default function ListTweets () {
 
-  const [tweets, setTweets] = useState<Itweet[]>([])
-
+  const arrayTweets: Itweet[] = useAppSelector((state) => state.tweet.tweets)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    apiClient.get('/tweets').then((res: AxiosResponse<Response>) => {
-      const { result } = res.data
-      setTweets(result)
+    getListTweets().then((res) => {
+      dispatch(addArrayTweetToList(res))
     }).catch((err) => {
       console.log(err)
     })
@@ -29,7 +24,7 @@ export default function ListTweets () {
   return (
     <>
       {
-        tweets.map(data => <Tweet key={data._id} data={data} />)
+        arrayTweets.map(data => <Tweet key={data._id} data={data} />)
       }
     </>
   )

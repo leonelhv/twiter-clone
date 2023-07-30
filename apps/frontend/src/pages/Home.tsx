@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
 import logo from '../assets/logo.svg';
 import { NewTweet } from '../components/NewTweet';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { isLogged as logged, syncUser } from '../store/user/userSlice';
-import { getFromLocalStore } from '../utils/localStorage';
-import { UserState } from '../types/user';
+import { isLogged as logged, selectUser, syncUser } from '../store/user/userSlice';
+
 import AuthBanner from '../components/AuthBanner';
 import UserProfileCard from '../components/UserProfileCard';
 import ListTweets from '../components/ListTweets';
+import { useEffect } from 'react';
 
 
 
@@ -16,17 +15,14 @@ export default function Home () {
 
 
   const isLogged = useAppSelector(logged)
+  const user = useAppSelector(selectUser)
+
   const dispatch = useAppDispatch()
 
-
-  const [user, setUser] = useState<UserState | null>(() => getFromLocalStore('user') as UserState || null)
-
   useEffect(() => {
-    if (user?.id) {
-      setUser(user)
-      dispatch(syncUser(user))
-    }
-  }, [])
+    dispatch(syncUser())
+  }, [isLogged])
+
 
   return (
     <>
@@ -46,7 +42,7 @@ export default function Home () {
               <h2 className='text-white text-2xl font-bold mb-12'>Home</h2>
             </div>
             <div className='my-12 '>
-              {isLogged && <NewTweet />}
+              {isLogged && <NewTweet user={user!} />}
               <ListTweets />
             </div>
           </div>

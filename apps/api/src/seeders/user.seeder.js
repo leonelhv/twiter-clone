@@ -6,6 +6,22 @@ const bcrypt = require("bcryptjs");
 
 const maxCant = 100;
 
+async function createUserTest () {
+
+  const hashPassword = await bcrypt.hash("123456", 10)
+
+  const userTest = {
+    username: "test",
+    email: "test@gmail.com",
+    password: hashPassword,
+    name: "test",
+    lastname: "test",
+    phone: "123456789",
+    photo: "assets/1.png"
+  }
+  return userTest
+}
+
 const seedUsers = async (req, res) => {
   try {
     const cant = req.query.cant || 20;
@@ -19,6 +35,10 @@ const seedUsers = async (req, res) => {
     const USERS = await usersFake(cant);
 
     await User.insertMany(USERS);
+
+    const userTest = await createUserTest()
+
+    await User.create(userTest);
 
     res.json({ message: 'Users seeder successfully' });
   } catch (error) {

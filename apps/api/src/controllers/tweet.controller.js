@@ -1,4 +1,5 @@
 const Tweet = require('../models/tweet.model.js')
+const User = require('../models/user.model.js')
 
 const { verifyAccessToken } = require("../libs/jwt")
 const responseCustom = require("../utils/response")
@@ -24,9 +25,11 @@ const createTweet = async (req, res) => {
 
   const { content } = req.body
 
+  const user = await User.findById(payload.id)
+
   const newTweet = new Tweet({
     content,
-    userId: payload.id
+    userId: user
   })
 
   const tweetSaved = await newTweet.save()

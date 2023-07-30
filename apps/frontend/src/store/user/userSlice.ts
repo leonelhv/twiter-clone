@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { UserState } from '../../types/user'
+import { getFromLocalStorage } from '../../utils/localStorage'
 
 
 
@@ -15,12 +16,13 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    syncUser: (state, action: PayloadAction<UserState>) => {
-      state.id = action.payload.id
-      state.name = action.payload.name
-      state.email = action.payload.email
-      state.username = action.payload.username
-      state.photo = action.payload.photo
+    syncUser: (state) => {
+      const user = getFromLocalStorage<UserState>('user')
+      state.id = user?.id ?? ''
+      state.name = user?.name ?? ''
+      state.email = user?.email ?? ''
+      state.username = user?.username ?? ''
+      state.photo = user?.photo ?? ''
     },
     logout: (state) => {
       state.id = ''
@@ -34,8 +36,8 @@ export const userSlice = createSlice({
 
 export const { syncUser, logout } = userSlice.actions
 
-export const selectUser = (state: { user: UserState }) => state.user
+export const selectUser = (state: { user?: UserState }) => state.user
 
-export const isLogged = (state: { user: UserState }) => state.user.id !== ''
+export const isLogged = (state: { user?: UserState }) => state.user?.id !== ''
 
 export default userSlice.reducer
