@@ -59,6 +59,7 @@ const register = async (req, res) => {
 
   return responseCustom(res, 200, {
     id: userSaved._id,
+    name: userSaved.name,
     username: userSaved.username,
     email: userSaved.email,
     photo: userSaved.photo
@@ -88,6 +89,7 @@ const login = async (req, res) => {
 
   responseCustom(res, 200, {
     id: userFound._id,
+    name: userFound.name,
     username: userFound.username,
     email: userFound.email,
     photo: userFound.photo
