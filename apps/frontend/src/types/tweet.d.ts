@@ -9,6 +9,7 @@ export interface Itweet {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  liked?: boolean;
 }
 
 interface User {

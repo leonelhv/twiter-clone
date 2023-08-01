@@ -10,25 +10,25 @@ import { useEffect } from 'react';
 export default function Home () {
 
 
-  const isLogged = useAppSelector(logged)
-  const user = useAppSelector(selectUser)
+    const isLogged = useAppSelector(logged)
+    const user = useAppSelector(selectUser)
 
-  const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(syncUser())
-  }, [isLogged])
+    useEffect(() => {
+        dispatch(syncUser())
+    }, [isLogged])
 
 
-  return (
-    <div className='w-full h-full'>
-      <div className='px-4'>
-        <h2 className='text-white text-2xl font-bold mb-12'>Home</h2>
-      </div>
-      <div className='my-12 '>
-        {isLogged && <NewTweet user={user!} />}
-        <ListTweets />
-      </div>
-    </div>
-  )
+    return (
+        <div className='w-full h-full'>
+            <div className='px-4'>
+                <h2 className='text-white text-2xl font-bold mb-12'>Home</h2>
+            </div>
+            <div className='my-12 '>
+                {isLogged && <NewTweet user={user!} />}
+                <ListTweets />
+            </div>
+        </div>
+    )
 }
