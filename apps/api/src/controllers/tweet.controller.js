@@ -1,35 +1,22 @@
 const Tweet = require('../models/tweet.model.js')
 const User = require('../models/user.model.js')
-
-const { verifyAccessToken } = require("../libs/jwt")
+const Like = require('../models/like.model.js')
 const responseCustom = require("../utils/response")
+const { ErrorCustom } = require("../utils/ErrorCustom")
+
 
 
 
 const createTweet = async (req, res) => {
 
-  const { token } = req.cookies
-
-  if (!token) {
-    return responseCustom(res, 400, { message: "token is required" })
-  }
-
-  const payload = await verifyAccessToken(token)
-
-  if (!payload) throw new ErrorCustom(401, "token is invalid")
-
-  const isTokenExpired = payload.exp < Math.floor(Date.now() / 1000)
-
-
-  if (isTokenExpired) throw new ErrorCustom(401, "token is expired")
-
   const { content } = req.body
+  const { user } = req
 
-  const user = await User.findById(payload.id)
+  const userData = await User.findById(user.id)
 
   const newTweet = new Tweet({
     content,
-    userId: user
+    userId: userData
   })
 
   const tweetSaved = await newTweet.save()
@@ -39,25 +26,10 @@ const createTweet = async (req, res) => {
 
 const deleteTweet = async (req, res) => {
 
-  const { token } = req.cookies
 
-  if (!token) {
-    return responseCustom(res, 400, { message: "token is required" })
-  }
-
-  const payload = await verifyAccessToken(token)
-
-  if (!payload) throw new ErrorCustom(401, "token is invalid")
-
-
-  const isTokenExpired = payload.exp < Math.floor(Date.now() / 1000)
-
-  if (isTokenExpired) throw new ErrorCustom(401, "token is expired")
-
-
+  const { user } = req
   const { id } = req.params
-
-  const belongsToUser = await Tweet.findOne({ _id: id, userId: payload.id })
+  const belongsToUser = await Tweet.findOne({ _id: id, userId: user.id })
 
   if (!belongsToUser) throw new ErrorCustom(401, "tweet does not belong to user")
 
@@ -77,8 +49,41 @@ const getTweets = async (req, res) => {
 
 }
 
+const likeToTweet = async (req, res) => {
+
+  const { id } = req.user
+  const { idTweet } = req.body
+
+  const tweet = await Tweet.findById(idTweet)
+
+
+  if (!tweet) throw new ErrorCustom(404, "Tweet not found")
+
+  const like = await Like.findOne({ userId: id, tweetId: idTweet })
+
+  if (like) {
+    await Like.findByIdAndDelete(like._id)
+    tweet.likes -= 1
+    await tweet.save()
+    responseCustom(res, 200, tweet)
+    return
+  } else {
+    const newLike = new Like({
+      userId: id,
+      tweetId: idTweet
+    })
+    await newLike.save()
+    tweet.likes += 1
+    await tweet.save()
+  }
+
+  responseCustom(res, 200, tweet)
+
+
+}
 module.exports = {
   createTweet,
   deleteTweet,
-  getTweets
+  getTweets,
+  likeToTweet
 }

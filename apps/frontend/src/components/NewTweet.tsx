@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import apiClient from "../axios/apiClient";
 import { UserState } from "../types/user";
@@ -8,41 +8,27 @@ import { addTweetToList } from "../store/tweet/tweetSlice";
 import { Itweet } from "../types/tweet";
 import { Response } from "../types/response";
 import { AxiosResponse } from "axios";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
-
-
-
-
-const text_default = "what is happening?";
 
 const defaultValues = {
-  content: text_default,
+  content: "",
 }
 
 interface Props {
   user: UserState
 }
 
+const maxContentLength = 280
+
 export const NewTweet = ({ user }: Props) => {
-  const [content, setContent] = useState(text_default);
+  const [content, setContent] = useState("");
+  const [porcent, setPorcent] = useState(0);
 
 
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const textarea = event.target;
-    textarea.style.height = '';
-    textarea.style.height = `${textarea.scrollHeight}px`;
-    setContent(textarea.value);
-  };
-
-  const handleClick = () => {
-    if (content === text_default) {
-      setContent("");
-    }
-  };
-
-
-  const { register, reset, handleSubmit, formState: { errors } } = useForm<{ content: string }>({
+  const { register, handleSubmit, formState: { isValid } } = useForm<{ content: string }>({
     mode: "onChange",
     defaultValues
   })
@@ -53,11 +39,45 @@ export const NewTweet = ({ user }: Props) => {
     apiClient.post('/tweet', data).then((res: AxiosResponse<Response<Itweet>>) => {
       const resTweet = res.data.result
       dispatch(addTweetToList(resTweet))
-      reset(defaultValues)
+      setContent("");
+      refTextArea.current!.style.height = "auto";
     }).catch((err) => {
       console.log(err)
     })
   }
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = event.target;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }
+
+  const progressBarColors = () => {
+
+    let pathColor = 'rgb(29, 161, 242)'
+    let textColor = 'white'
+
+    if (porcent <= 80) {
+      pathColor = `rgb(76,29,149)`
+    } else if (porcent > 80 && porcent < 100) {
+      pathColor = `rgb(255, 159, 64)`
+    } else if (porcent >= 100) {
+      pathColor = `rgb(239, 68, 68)`
+      textColor = 'rgb(239, 68, 68)'
+    }
+
+    return { pathColor, textColor }
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = event.target;
+    setContent(textarea.value);
+    const calcPorcent = Math.ceil((textarea.value.length / maxContentLength) * 100);
+    setPorcent(calcPorcent);
+  };
+
+  const refTextArea = useRef<HTMLTextAreaElement | null>(null)
+  const { ref, ...rest } = register("content", { required: true, maxLength: maxContentLength, onChange: handleOnChange });
 
   return (
     <div className="flex w-full mb-4 p-4">
@@ -67,17 +87,33 @@ export const NewTweet = ({ user }: Props) => {
       <form className="flex flex-col gap-3 w-[calc(100%-66px)] ml-4" onSubmit={handleSubmit(onSubmit)}>
         <textarea
           className="block outline-none pb-1 text-white bg-transparent resize-none h-auto"
-          placeholder={text_default}
-          onClick={handleClick}
+          placeholder="What is happening?"
           onInput={handleInputChange}
           value={content}
-          {...register("content", { required: true, maxLength: 280 })}
+          {...rest}
+          ref={(e) => {
+            ref(e)
+            refTextArea.current = e
+          }}
         />
-        {errors.content?.type === 'required' && <span className="text-red-500">This field is required</span>}
-        {errors.content?.type === "maxLength" && <span className="text-red-500">Max length exceeded</span>}
-        <button className="bg-violet-900 text-white px-3 py-2 rounded-xl self-end">
-          Tweet
-        </button>
+
+        <div className="flex gap-4 items-center justify-end">
+
+          {
+            content.length && <div className="w-8 flex items-center">
+
+              <CircularProgressbar value={porcent} text={`${porcent >= 80 ? 100 - porcent : ''}`} styles={buildStyles({
+                textSize: '32px',
+                textColor: progressBarColors().textColor,
+                pathColor: progressBarColors().pathColor,
+              })} />;
+            </div>
+          }
+
+          <button className="bg-violet-900 text-white px-3 py-2 rounded-xl self-end disabled:opacity-50" disabled={!isValid}>
+            Tweet
+          </button>
+        </div>
       </form>
     </div>
   );

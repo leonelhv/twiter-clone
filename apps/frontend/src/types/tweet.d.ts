@@ -6,6 +6,8 @@ export interface Itweet {
   retweets: number;
   countComments: number;
   tweetFather: string | null;
+  createdAt: string;
+  updatedAt: string;
   __v: number;
 }
 

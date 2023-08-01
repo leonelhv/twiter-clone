@@ -38,7 +38,7 @@ export default function FormSignUp ({ closeModal }: Props) {
   const [msgError, setMsgError] = useState<string[]>([])
 
 
-  const { register, watch, getValues, reset, handleSubmit, formState: { errors } } = useForm<Inputs>({
+  const { register, watch, getValues, reset, handleSubmit, formState: { errors, isValid } } = useForm<Inputs>({
     mode: "onChange",
     defaultValues,
   });
@@ -156,6 +156,7 @@ export default function FormSignUp ({ closeModal }: Props) {
         <button
           type="submit"
           className="w-full bg-violet-900 text-center py-3 rounded bg-green text-white hover:bg-green-dark focus:outline-none my-1 disabled:opacity-50"
+          disabled={!isValid}
         >
           Create Account
         </button>

@@ -3,6 +3,7 @@ import { UserState } from "../types/user";
 import { imageStatic } from "../utils/imageStatic";
 import { useAppDispatch } from "../store/hooks";
 import { logout } from '../store/user/userSlice';
+import Cookies from "universal-cookie";
 
 interface Props {
   user: UserState
@@ -11,6 +12,7 @@ interface Props {
 export default function UserProfileCard ({ user }: Props) {
 
   const [settings, setSettings] = useState(false)
+  const cookies = new Cookies()
   const dispatch = useAppDispatch()
   const toogleSettings = () => {
     setSettings(!settings)
@@ -18,6 +20,7 @@ export default function UserProfileCard ({ user }: Props) {
 
   const logoutUser = () => {
     localStorage.removeItem('user')
+    cookies.remove('token')
     dispatch(logout())
     toogleSettings()
   }

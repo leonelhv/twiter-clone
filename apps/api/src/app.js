@@ -13,8 +13,8 @@ const tweethRoutes = require("./routes/tweet.routes.js");
 const seedRoutes = require("./routes/seeder.routes.js");
 
 const corsOptions = {
-  origin: true, //included origin as true
-  credentials: true, //included credentials as true
+  origin: true,
+  credentials: true,
 };
 
 
