@@ -5,9 +5,10 @@ import { useAppDispatch } from "../store/hooks";
 import { logout } from '../store/user/userSlice';
 import Cookies from "universal-cookie";
 import { User } from "../types/tweet";
+import { UserState } from "../types/user";
 
 interface Props {
-    user: User,
+    user: User | UserState,
     disabledSettings?: boolean
 }
 
