@@ -23,14 +23,17 @@ export const tweetSlice = createSlice({
     },
     addArrayTweetToList: (state, action: PayloadAction<Itweet[]>) => {
       state.tweets = [...action.payload]
+    },
+    updateArrayTweetToList: (state, action: PayloadAction<Itweet[]>) => {
+        state.tweets = [...action.payload]
     }
   },
 })
 
-export const { addTweetToList, setNewTweet, addArrayTweetToList } = tweetSlice.actions
+export const { addTweetToList, setNewTweet, addArrayTweetToList,updateArrayTweetToList } = tweetSlice.actions
 
 export const selectTweet = (state: { twt: TweetState }) => state.twt.newTweet
 
-export const selectTweets = (state: { twt: TweetState }) => state.twt.tweets
+export const selectArrayTweets = (state: { twt: TweetState }) => state.twt.tweets
 
 export default tweetSlice.reducer

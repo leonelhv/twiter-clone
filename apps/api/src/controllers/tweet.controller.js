@@ -69,55 +69,68 @@ const getTweets = async (req, res) => {
 
         return responseCustom(res, 200, TweetsWithLike)
     }
+}
+
+const getTweet = async (req, res) => {
+    const { idTweet } = req.params
+
+    const { user } = req
+
+    const tweet = await Tweet.findById(idTweet).populate("userId", "username name lastname photo")
+    const likes = await Like.find({ tweetId: idTweet })
+    tweet["likes"] = likes.length
+    console.log(tweet)
+    if (!user.id) {
+        tweet["liked"] = false
+        responseCustom(res, 200, tweet)
+    } else {
+        const like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
 
 
+        return responseCustom(res, 200, {
+            ...tweet._doc,
+            liked: like
+        })
 
-
-
+    }
 }
 
 const likeToTweet = async (req, res) => {
+    const { id } = req.user;
+    const { idTweet } = req.body;
 
-    const { id } = req.user
-    const { idTweet } = req.body
+    const tweet = await Tweet.findById(idTweet);
 
-    const tweet = await Tweet.findById(idTweet)
+    if (!tweet) throw new ErrorCustom(404, "Tweet not found");
 
-
-    if (!tweet) throw new ErrorCustom(404, "Tweet not found")
-
-    const like = await Like.findOne({ userId: id, tweetId: idTweet })
-
+    const like = await Like.findOne({ userId: id, tweetId: idTweet });
 
     if (like) {
-        await Like.findByIdAndDelete(like._id)
-        tweet.likes -= 1
-        await tweet.save()
-        const tweetResponse = {
-            likes: tweet._doc.likes,
-            liked: false
-        }
-        responseCustom(res, 200, tweetResponse)
-        return
+        await Like.findByIdAndDelete(like._id);
+        tweet.likes -= 1;
+        await tweet.save();
     } else {
         const newLike = new Like({
             userId: id,
-            tweetId: idTweet
-        })
-        await newLike.save()
-        tweet.likes += 1
-        await tweet.save()
-        const tweetResponse = {
-            likes: tweet._doc.likes,
-            liked: true
-        }
-        responseCustom(res, 200, tweetResponse)
-        return
+            tweetId: idTweet,
+        });
+        await newLike.save();
+        tweet.likes += 1;
+        await tweet.save();
     }
-}
+
+    const tweetResponse = {
+        likes: tweet._doc.likes,
+        liked: !like,
+    };
+
+    responseCustom(res, 200, tweetResponse);
+};
+
 module.exports = {
     createTweet,
     deleteTweet,
     getTweets,
-    likeToTweet
+    likeToTweet,
+    getTweet
 }

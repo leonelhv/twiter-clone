@@ -6,7 +6,7 @@ import tweetReducer from './tweet/tweetSlice'
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    tweet: tweetReducer,
+    twt: tweetReducer,
   },
 })
 

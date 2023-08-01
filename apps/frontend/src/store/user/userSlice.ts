@@ -36,8 +36,8 @@ export const userSlice = createSlice({
 
 export const { syncUser, logout } = userSlice.actions
 
-export const selectUser = (state: { user?: UserState }) => state.user
+export const selectUser = (state: { user: UserState }) => state.user
 
-export const isLogged = (state: { user?: UserState }) => state.user?.id !== ''
+export const isLogged = (state: { user: UserState }) => state.user?.id !== ''
 
 export default userSlice.reducer
