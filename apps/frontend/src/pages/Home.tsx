@@ -26,7 +26,7 @@ export default function Home () {
                 <h2 className='text-white text-2xl font-bold mb-12'>Home</h2>
             </div>
             <div className='my-12 '>
-                {isLogged && <NewTweet user={user!} />}
+                {isLogged && <NewTweet user={user} />}
                 <ListTweets />
             </div>
         </div>
