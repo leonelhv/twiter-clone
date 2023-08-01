@@ -7,15 +7,17 @@ import Cookies from "universal-cookie";
 import { User } from "../types/tweet";
 
 interface Props {
-    user: User
+    user: User,
+    disabledSettings?: boolean
 }
 
-export default function UserProfileCard ({ user }: Props) {
+export default function UserProfileCard ({ user, disabledSettings = false }: Props) {
 
     const [settings, setSettings] = useState(false)
     const cookies = new Cookies()
     const dispatch = useAppDispatch()
     const toogleSettings = () => {
+        if (disabledSettings) return
         setSettings(!settings)
     }
 

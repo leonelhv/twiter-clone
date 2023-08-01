@@ -43,7 +43,7 @@ export default function StatusTweet () {
             </div>
             <div className='flex justify-between mt-6'>
                 {
-                    infoUser && <UserProfileCard user={infoUser} />
+                    infoUser && <UserProfileCard user={infoUser} disabledSettings={true} />
                 }
             </div>
             <div className="mt-6">
