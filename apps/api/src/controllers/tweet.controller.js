@@ -9,33 +9,34 @@ const { ErrorCustom } = require("../utils/ErrorCustom")
 
 const createTweet = async (req, res) => {
 
-    const { content } = req.body
-    const { user } = req
+  const { content, tweetFather } = req.body
+  const { user } = req
 
-    const userData = await User.findById(user.id)
+  const userData = await User.findById(user.id).select("username name lastname photo")
 
-    const newTweet = new Tweet({
-        content,
-        userId: userData
-    })
+  const newTweet = new Tweet({
+    content,
+    userId: userData,
+    tweetFather: tweetFather || null
+  })
 
-    const tweetSaved = await newTweet.save()
+  const tweetSaved = await newTweet.save()
 
-    responseCustom(res, 200, tweetSaved)
+  responseCustom(res, 200, tweetSaved)
 }
 
 const deleteTweet = async (req, res) => {
 
 
-    const { user } = req
-    const { id } = req.params
-    const belongsToUser = await Tweet.findOne({ _id: id, userId: user.id })
+  const { user } = req
+  const { id } = req.params
+  const belongsToUser = await Tweet.findOne({ _id: id, userId: user.id })
 
-    if (!belongsToUser) throw new ErrorCustom(401, "tweet does not belong to user")
+  if (!belongsToUser) throw new ErrorCustom(401, "tweet does not belong to user")
 
-    const tweetDeleted = await Tweet.findByIdAndDelete(id)
+  const tweetDeleted = await Tweet.findByIdAndDelete(id)
 
-    responseCustom(res, 200, tweetDeleted)
+  responseCustom(res, 200, tweetDeleted)
 
 
 
@@ -43,95 +44,90 @@ const deleteTweet = async (req, res) => {
 
 const getTweets = async (req, res) => {
 
-    const { user } = req
+  const { user } = req
+  const { tweetId } = req.query
 
-    const tweets = await Tweet.find().populate("userId", "username name lastname photo").sort({ createdAt: -1 })
+  if (tweetId) {
+    const tweet = await Tweet.find({ tweetFather: tweetId }).populate("userId", "username name lastname photo")
+    return responseCustom(res, 200, tweet)
+  }
+
+  const tweets = await Tweet.find().populate("userId", "username name lastname photo").sort({ createdAt: -1 })
+
+  if (!user) {
+    return responseCustom(res, 200, tweets)
+  } else {
+    const TweetsWithLike = await Promise.all(tweets.map(async (tweet) => {
 
 
-    if (!user) {
-        return responseCustom(res, 200, tweets)
-    } else {
-        const TweetsWithLike = await Promise.all(tweets.map(async (tweet) => {
+      const like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
 
+      return {
+        ...tweet._doc,
+        liked: like
+      }
+    }))
 
-            const like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
-
-            if (like) {
-                return {
-                    ...tweet._doc,
-                    liked: true
-                }
-            } else {
-                return {
-                    ...tweet._doc,
-                    liked: false
-                }
-            }
-        }))
-
-        return responseCustom(res, 200, TweetsWithLike)
-    }
+    return responseCustom(res, 200, TweetsWithLike)
+  }
 }
 
 const getTweet = async (req, res) => {
-    const { idTweet } = req.params
+  const { idTweet } = req.params
 
-    const { user } = req
+  const { user } = req
 
-    const tweet = await Tweet.findById(idTweet).populate("userId", "username name lastname photo")
-    const likes = await Like.find({ tweetId: idTweet })
-    tweet["likes"] = likes.length
-    if (!user) {
-        tweet["liked"] = false
-        responseCustom(res, 200, tweet)
-    } else {
-        const like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
+  const tweet = await Tweet.findById(idTweet).populate("userId", "username name lastname photo")
+  const likes = await Like.find({ tweetId: idTweet })
 
 
-        return responseCustom(res, 200, {
-            ...tweet._doc,
-            liked: like
-        })
+  const like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
+  const comments = await Tweet.find({ tweetFather: idTweet }).populate("userId") || []
 
-    }
+  return responseCustom(res, 200, {
+    ...tweet._doc,
+    liked: like,
+    likes: likes.length,
+    comments
+  })
+
 }
 
 const likeToTweet = async (req, res) => {
-    const { id } = req.user;
-    const { idTweet } = req.body;
+  const { id } = req.user;
+  const { idTweet } = req.body;
 
-    const tweet = await Tweet.findById(idTweet);
+  const tweet = await Tweet.findById(idTweet);
 
-    if (!tweet) throw new ErrorCustom(404, "Tweet not found");
+  if (!tweet) throw new ErrorCustom(404, "Tweet not found");
 
-    const like = await Like.findOne({ userId: id, tweetId: idTweet });
+  const like = await Like.findOne({ userId: id, tweetId: idTweet });
 
-    if (like) {
-        await Like.findByIdAndDelete(like._id);
-        tweet.likes -= 1;
-        await tweet.save();
-    } else {
-        const newLike = new Like({
-            userId: id,
-            tweetId: idTweet,
-        });
-        await newLike.save();
-        tweet.likes += 1;
-        await tweet.save();
-    }
+  if (like) {
+    await Like.findByIdAndDelete(like._id);
+    tweet.likes -= 1;
+  } else {
+    const newLike = new Like({
+      userId: id,
+      tweetId: idTweet,
+    });
+    await newLike.save();
+    tweet.likes += 1;
+  }
+  await tweet.save();
 
-    const tweetResponse = {
-        likes: tweet._doc.likes,
-        liked: !like,
-    };
+  const tweetResponse = {
+    likes: tweet._doc.likes,
+    liked: !like,
+  };
 
-    responseCustom(res, 200, tweetResponse);
+  responseCustom(res, 200, tweetResponse);
 };
 
 module.exports = {
-    createTweet,
-    deleteTweet,
-    getTweets,
-    likeToTweet,
-    getTweet
+  createTweet,
+  deleteTweet,
+  getTweets,
+  likeToTweet,
+  getTweet
 }
