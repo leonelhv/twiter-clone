@@ -28,9 +28,9 @@ export default function MainLayout () {
                         <Link to={"/home"}>
                             <img src={logo} className='w-10 h-10' alt="" />
                         </Link>
-                        <div className='flex-1'>l</div>
+                        <div className='flex-1'></div>
                         {
-                            isLogged && <UserProfileCard user={user!} />
+                            isLogged && <UserProfileCard user={user} />
                         }
                     </div>
                     <div className='w-1/2 py-4 max-h-screen overflow-y-scroll scrollbar-hide border-x-[0.3px] border-gray-200/20'>
