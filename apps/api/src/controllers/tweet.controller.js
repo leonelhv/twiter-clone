@@ -46,7 +46,9 @@ const getTweets = async (req, res) => {
     const { user } = req
 
     const tweets = await Tweet.find().populate("userId", "username name lastname photo").sort({ createdAt: -1 })
-    if (!user.id) {
+
+
+    if (user.id === undefined) {
         return responseCustom(res, 200, tweets)
     } else {
         const TweetsWithLike = await Promise.all(tweets.map(async (tweet) => {
