@@ -33,9 +33,7 @@ const tweetSchema = new mongoose.Schema({
     default: null,
     ref: 'Tweet',
     trim: true
-  },
-
-
+  }
 },
   {
     timestamps: true
