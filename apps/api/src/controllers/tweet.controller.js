@@ -81,7 +81,7 @@ const getTweet = async (req, res) => {
     const tweet = await Tweet.findById(idTweet).populate("userId", "username name lastname photo")
     const likes = await Like.find({ tweetId: idTweet })
     tweet["likes"] = likes.length
-    if (!user.id) {
+    if (!user) {
         tweet["liked"] = false
         responseCustom(res, 200, tweet)
     } else {
