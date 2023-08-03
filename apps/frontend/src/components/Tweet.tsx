@@ -3,7 +3,7 @@ import { imageStatic } from "../utils/imageStatic"
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import updateLocale from 'dayjs/plugin/updateLocale'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ActionsTweet from "./ActionsTweet"
 
 dayjs().format()
@@ -39,9 +39,16 @@ export default function Tweet ({ tweet }: Props) {
 
   const time = dayjs(tweet.createdAt).fromNow()
 
+  const navigate = useNavigate();
+
   const goToTweet = () => {
     return `/${tweet.userId.username}/status/${tweet._id}`
   }
+
+  const goToProfile = () => {
+    navigate(`/${tweet.userId.username}`)
+  }
+
 
   return (
     <Link to={goToTweet()} className='pt-7 cursor-pointer border-t-[0.3px] border-gray-200/20'>
@@ -53,7 +60,7 @@ export default function Tweet ({ tweet }: Props) {
 
           <div className='flex justify-between'>
             <div className='flex gap-2 items-center'>
-              <span className='text-white font-bold'>{tweet.userId.name}</span>
+              <span className='text-white font-bold hover:underline' onClick={goToProfile}>{tweet.userId.name}</span>
               <span className='text-gray-400'>@{tweet.userId.username}</span>
               <span className='text-gray-400 ml-2 text-[14px]'>{time}</span>
             </div>

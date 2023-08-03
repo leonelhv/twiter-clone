@@ -13,6 +13,7 @@ interface Props {
 export default function UserProfileCard ({ user, disabledSettings = false }: Props) {
 
   const [settings, setSettings] = useState(false)
+
   const dispatch = useAppDispatch()
   const toogleSettings = () => {
     if (disabledSettings) return
@@ -25,6 +26,8 @@ export default function UserProfileCard ({ user, disabledSettings = false }: Pro
     dispatch(logout())
     toogleSettings()
   }
+
+
 
   return (
     <div className='container mx-auto flex flex-col justify-center relative'>
