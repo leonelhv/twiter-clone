@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getCookieByString } from '../../utils/helpersCookies'
-import { User } from '../../types/tweet'
+import { User } from '../../types/user'
+
 
 
 

@@ -64,7 +64,7 @@ async function createRandomUsers () {
     const photo = `assets/${randomNumber}.png`
 
     resolve({
-      username,
+      username: username.replace(/\./g, '_'),
       email,
       password,
       name,

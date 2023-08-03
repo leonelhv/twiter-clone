@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UserProfileCard from "../components/UserProfileCard";
 import { getTweetById } from "../services/tweet.service";
-import { Itweet, User } from "../types/tweet";
+import { Itweet } from "../types/tweet";
 import ActionsTweet from "../components/ActionsTweet";
 import { NewTweet } from "../components/NewTweet";
 import ListTweets from "../components/ListTweets";
 import { useAppSelector } from "../store/hooks";
 import { isLogged as logged } from "../store/user/userSlice";
 import HeaderTimeLine from "../components/HeaderTimeLine";
+import { User } from "../types/user";
 
 
 export default function StatusTweet () {

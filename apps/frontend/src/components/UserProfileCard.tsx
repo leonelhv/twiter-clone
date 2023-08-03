@@ -2,8 +2,9 @@ import { useState } from "react";
 import { imageStatic } from "../utils/imageStatic";
 import { useAppDispatch } from "../store/hooks";
 import { logout } from '../store/user/userSlice';
-import { User } from "../types/tweet";
 import { removeCookieByString } from "../utils/helpersCookies";
+import { useNavigate } from "react-router-dom";
+import { User } from "../types/user";
 
 interface Props {
   user: User,
@@ -13,6 +14,7 @@ interface Props {
 export default function UserProfileCard ({ user, disabledSettings = false }: Props) {
 
   const [settings, setSettings] = useState(false)
+  const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
   const toogleSettings = () => {
@@ -27,6 +29,10 @@ export default function UserProfileCard ({ user, disabledSettings = false }: Pro
     toogleSettings()
   }
 
+  const goToProfile = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    e.preventDefault()
+    navigate(`/${user.username}`)
+  }
 
 
   return (
@@ -39,7 +45,7 @@ export default function UserProfileCard ({ user, disabledSettings = false }: Pro
             }
           </div>
           <div className='flex flex-col'>
-            <span className='text-white font-bold'>{user.name} {user.lastname}</span>
+            <span onClick={goToProfile} className='text-white font-bold hover:underline'>{user.name} {user.lastname}</span>
             <span className='text-gray-400'>@{user.username}</span>
           </div>
         </div>

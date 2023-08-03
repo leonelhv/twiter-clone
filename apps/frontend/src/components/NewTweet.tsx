@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UserState } from "../types/user";
+
 import { imageStatic } from "../utils/imageStatic";
 import { useAppDispatch } from "../store/hooks";
 import { addTweetToList } from "../store/tweet/tweetSlice";
@@ -8,8 +8,9 @@ import { addTweetToList } from "../store/tweet/tweetSlice";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { type INewTweet, createTweet } from "../services/tweet.service";
-import { User } from "../types/tweet";
+
 import { useParams } from "react-router-dom";
+import { User } from "../types/user";
 
 
 const defaultValues = {
@@ -17,7 +18,7 @@ const defaultValues = {
 }
 
 interface Props {
-  user: UserState | User
+  user: User
   reply?: boolean
 }
 

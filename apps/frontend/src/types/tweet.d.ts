@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Itweet {
   _id: string;
   content: string;
@@ -13,11 +15,3 @@ export interface Itweet {
   liked?: boolean;
 }
 
-export interface User {
-  _id: string;
-  username: string;
-  email: string;
-  name: string;
-  lastname: string;
-  photo: string;
-}

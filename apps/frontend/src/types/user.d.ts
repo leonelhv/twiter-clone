@@ -1,7 +1,9 @@
-export interface UserState {
-  id: string
-  name: string
-  email: string
-  username: string
-  photo: string
+export interface User {
+  _id: string;
+  username: string;
+  email: string;
+  name: string;
+  lastname: string;
+  photo: string;
+  createdAt?: string;
 }

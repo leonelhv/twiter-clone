@@ -2,11 +2,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import apiClient from "../axios/apiClient";
 import { AxiosResponse } from "axios";
 import { useState } from "react";
-import { UserState } from "../types/user";
+
 
 import { useAppDispatch } from "../store/hooks";
 import { syncUser } from "../store/user/userSlice";
 import { saveCookies } from "../utils/helpersCookies";
+import { User } from "../types/user";
 
 type Inputs = {
   email: string
@@ -16,7 +17,7 @@ type Inputs = {
 interface Response {
   success: boolean,
   status: number,
-  result: UserState;
+  result: User;
 }
 
 interface Props {

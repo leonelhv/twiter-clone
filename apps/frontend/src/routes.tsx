@@ -5,7 +5,7 @@ import {
 import Home from "./pages/Home";
 import StatusTweet from "./pages/StatusTweet";
 import MainLayout from "./layouts/MainLayout";
-import Profile from "./pages/Profile";
+import UserProfile from "./pages/UserProfile";
 
 
 
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Profile />,
+        element: <UserProfile />,
       },
       {
         path: "status/:idTweet",

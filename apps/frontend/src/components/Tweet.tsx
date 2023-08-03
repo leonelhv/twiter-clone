@@ -45,7 +45,8 @@ export default function Tweet ({ tweet }: Props) {
     return `/${tweet.userId.username}/status/${tweet._id}`
   }
 
-  const goToProfile = () => {
+  const goToProfile = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    e.preventDefault()
     navigate(`/${tweet.userId.username}`)
   }
 
