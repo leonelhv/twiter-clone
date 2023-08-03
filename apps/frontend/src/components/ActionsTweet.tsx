@@ -4,7 +4,6 @@ import { likeToTweet } from "../services/tweet.service"
 import { useAppDispatch, useAppSelector } from "../store/hooks"
 import { selectArrayTweets, updateArrayTweetToList } from "../store/tweet/tweetSlice"
 import { isLogged as logged } from "../store/user/userSlice"
-import { useNavigate } from "react-router-dom"
 
 interface Props {
   infoTweet: Itweet
@@ -15,7 +14,6 @@ export default function ActionsTweet ({ infoTweet }: Props) {
   const [likes, setLikes] = useState<number>(infoTweet.likes)
   const [isLiked, setIsLiked] = useState<boolean>(infoTweet.liked)
 
-  const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
   const isLogged = useAppSelector(logged)
