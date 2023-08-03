@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { UserState } from '../../types/user'
-import { getFromLocalStorage } from '../../utils/localStorage'
+import { getCookieByString } from '../../utils/helpersCookies'
+
 
 
 
@@ -17,7 +18,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     syncUser: (state) => {
-      const user = getFromLocalStorage<UserState>('user')
+      const user = getCookieByString<UserState>('user')
       state.id = user?.id ?? ''
       state.name = user?.name ?? ''
       state.email = user?.email ?? ''

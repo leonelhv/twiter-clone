@@ -80,8 +80,12 @@ const getTweet = async (req, res) => {
   const tweet = await Tweet.findById(idTweet).populate("userId", "username name lastname photo")
   const likes = await Like.find({ tweetId: idTweet })
 
+  let like = false
 
-  const like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
+  if (user) {
+    like = await Like.findOne({ userId: user.id, tweetId: tweet._id })
+  }
+
   const comments = await Tweet.find({ tweetFather: idTweet }).populate("userId") || []
 
   return responseCustom(res, 200, {
