@@ -9,9 +9,10 @@ import { User } from "../types/user";
 interface Props {
   user: User,
   disabledSettings?: boolean
+  redirectProfile?: boolean
 }
 
-export default function UserProfileCard ({ user, disabledSettings = false }: Props) {
+export default function UserProfileCard ({ user, disabledSettings = false, redirectProfile = false }: Props) {
 
   const [settings, setSettings] = useState(false)
   const navigate = useNavigate()
@@ -31,22 +32,25 @@ export default function UserProfileCard ({ user, disabledSettings = false }: Pro
 
   const goToProfile = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.preventDefault()
+    if (!redirectProfile) return
     navigate(`/${user.username}`)
   }
 
 
   return (
-    <div className='container mx-auto flex flex-col justify-center relative'>
-      <div className='flex justify-between cursor-pointer' onClick={toogleSettings}>
-        <div className='flex gap-2'>
-          <div className='w-12 h-12 rounded-full'>
-            {
-              user && <img src={imageStatic(user.photo)} alt="" />
-            }
-          </div>
-          <div className='flex flex-col'>
-            <span onClick={goToProfile} className='text-white font-bold hover:underline'>{user.name} {user.lastname}</span>
-            <span className='text-gray-400'>@{user.username}</span>
+    <div className='container mx-auto flex flex-col justify-center relative cursor-default'>
+      <div className='flex justify-between' onClick={toogleSettings}>
+        <div className='block cursor-pointer' onClick={goToProfile}>
+          <div className="flex gap-2">
+            <div className='w-12 h-12 rounded-full'>
+              {
+                user && <img src={imageStatic(user.photo)} alt="" />
+              }
+            </div>
+            <div className='flex flex-col'>
+              <span className={`text-white font-bold ${disabledSettings ? 'hover:underline' : ''}`}>{user.name} {user.lastname}</span>
+              <span className='text-gray-400'>@{user.username}</span>
+            </div>
           </div>
         </div>
       </div>

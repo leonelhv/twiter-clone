@@ -40,7 +40,7 @@ export default function StatusTweet () {
       <HeaderTimeLine title="Tweet" />
       <div className='flex justify-between mt-6 px-4'>
         {
-          infoUser && <UserProfileCard user={infoUser} disabledSettings />
+          infoUser && <UserProfileCard user={infoUser} disabledSettings redirectProfile />
         }
       </div>
       <div className="mt-6 pb-4 break-words px-4">

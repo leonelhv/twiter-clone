@@ -1,7 +1,13 @@
 import apiClient from "../axios/apiClient";
 import { User } from "../types/user";
 import { Response } from "../types/response";
+import { Itweet } from "../types/tweet";
 
-export function getInfoUser (username: string): Promise<User> {
-  return apiClient.get<Response<User>>(`/user/${username}`).then((response) => response.data.result);
+interface GetInfoResponse {
+  user: User;
+  tweets: Itweet[];
+}
+
+export function getInfoUser (username: string): Promise<GetInfoResponse> {
+  return apiClient.get<Response<GetInfoResponse>>(`/user/${username}`).then((response) => response.data.result);
 }
