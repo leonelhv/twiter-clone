@@ -3,11 +3,10 @@ import { imageStatic } from "../utils/imageStatic";
 import { useAppDispatch } from "../store/hooks";
 import { logout } from '../store/user/userSlice';
 import { User } from "../types/tweet";
-import { UserState } from "../types/user";
 import { removeCookieByString } from "../utils/helpersCookies";
 
 interface Props {
-  user: User | UserState,
+  user: User,
   disabledSettings?: boolean
 }
 
@@ -37,7 +36,7 @@ export default function UserProfileCard ({ user, disabledSettings = false }: Pro
             }
           </div>
           <div className='flex flex-col'>
-            <span className='text-white font-bold'>{user.name}</span>
+            <span className='text-white font-bold'>{user.name} {user.lastname}</span>
             <span className='text-gray-400'>@{user.username}</span>
           </div>
         </div>

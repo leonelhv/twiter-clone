@@ -47,12 +47,7 @@ const getTweets = async (req, res) => {
   const { user } = req
   const { tweetId } = req.query
 
-  if (tweetId) {
-    const tweet = await Tweet.find({ tweetFather: tweetId }).populate("userId", "username name lastname photo")
-    return responseCustom(res, 200, tweet)
-  }
-
-  const tweets = await Tweet.find().populate("userId", "username name lastname photo").sort({ createdAt: -1 })
+  const tweets = await Tweet.find({ tweetFather: tweetId || null }).populate("userId", "username name lastname photo").sort({ createdAt: -1 })
 
   if (!user) {
     return responseCustom(res, 200, tweets)

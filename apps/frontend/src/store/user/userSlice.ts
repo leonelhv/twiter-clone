@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UserState } from '../../types/user'
 import { getCookieByString } from '../../utils/helpersCookies'
+import { User } from '../../types/tweet'
 
 
 
 
-const initialState: UserState = {
-  id: '',
+const initialState: User = {
+  _id: '',
   name: '',
+  lastname: '',
   email: '',
   username: '',
   photo: ''
@@ -18,16 +19,18 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     syncUser: (state) => {
-      const user = getCookieByString<UserState>('user')
-      state.id = user?.id ?? ''
+      const user = getCookieByString<User>('user')
+      state._id = user?._id ?? ''
       state.name = user?.name ?? ''
+      state.lastname = user?.lastname ?? ''
       state.email = user?.email ?? ''
       state.username = user?.username ?? ''
       state.photo = user?.photo ?? ''
     },
     logout: (state) => {
-      state.id = ''
+      state._id = ''
       state.name = ''
+      state.lastname = ''
       state.email = ''
       state.username = ''
       state.photo = ''
@@ -37,8 +40,8 @@ export const userSlice = createSlice({
 
 export const { syncUser, logout } = userSlice.actions
 
-export const selectUser = (state: { user: UserState }) => state.user
+export const selectUser = (state: { user: User }) => state.user
 
-export const isLogged = (state: { user: UserState }) => state.user?.id !== ''
+export const isLogged = (state: { user: User }) => state.user?._id !== ''
 
 export default userSlice.reducer

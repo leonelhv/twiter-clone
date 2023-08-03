@@ -3,7 +3,7 @@ export interface Itweet {
   content: string;
   userId: User;
   likes: number;
-  liked:boolean;
+  liked: boolean;
   retweets: number;
   countComments: number;
   tweetFather: string | null;
@@ -16,6 +16,7 @@ export interface Itweet {
 export interface User {
   _id: string;
   username: string;
+  email: string;
   name: string;
   lastname: string;
   photo: string;
