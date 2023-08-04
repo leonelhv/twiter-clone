@@ -42,7 +42,7 @@ export default function UserProfileCard ({ user, disabledSettings = false, redir
       <div className='flex justify-between' onClick={toogleSettings}>
         <div className='block cursor-pointer' onClick={goToProfile}>
           <div className="flex gap-2">
-            <div className='w-12 h-12 rounded-full'>
+            <div className='w-12 h-12 rounded-full overflow-hidden'>
               {
                 user && <img src={imageStatic(user.photo)} alt="" />
               }

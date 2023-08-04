@@ -1,14 +1,15 @@
 const { faker } = require('@faker-js/faker');
 const { UniqueEnforcer } = require('enforce-unique');
-const randomRange = require("../utils/randomRange.js");
 const User = require("../models/user.model.js");
 const bcrypt = require("bcryptjs");
+const foundPathImage = require('../utils/foundPathImage.js');
 
 const maxCant = 100;
 
 async function createUserTest () {
 
   const hashPassword = await bcrypt.hash("123456", 10)
+  const photo = await foundPathImage()
 
   const userTest = {
     username: "test",
@@ -17,7 +18,7 @@ async function createUserTest () {
     name: "test",
     lastname: "test",
     phone: "123456789",
-    photo: "assets/1.png"
+    photo
   }
   return userTest
 }
@@ -49,8 +50,6 @@ const seedUsers = async (req, res) => {
 async function createRandomUsers () {
   return new Promise(async (resolve) => {
     const uniqueEnforce = new UniqueEnforcer();
-    const randomNumber = await randomRange(1, 3)
-
     const username = uniqueEnforce.enforce(() => {
       return faker.internet.userName()
     });
@@ -61,7 +60,9 @@ async function createRandomUsers () {
     const name = faker.person.firstName()
     const lastname = faker.person.lastName()
     const phone = faker.phone.number("#########")
-    const photo = `assets/${randomNumber}.png`
+
+    const photo = await foundPathImage()
+
 
     resolve({
       username: username.replace(/\./g, '_'),

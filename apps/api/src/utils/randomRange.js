@@ -1,5 +1,12 @@
 function randomRange (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  return new Promise((resolve, reject) => {
+    try {
+      const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      resolve(randomNumber);
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 module.exports = randomRange;

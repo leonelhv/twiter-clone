@@ -90,7 +90,7 @@ export const NewTweet = ({ reply = false }: Props) => {
 
   return (
     <div className="flex w-full mb-4 py-4">
-      <div className='w-12 h-12 rounded-full'>
+      <div className='w-12 h-12 rounded-full overflow-hidden'>
         {user && <img src={imageStatic(user.photo)} alt="" />}
       </div>
       <form className="flex flex-col gap-3 w-[calc(100%-66px)] ml-4" onSubmit={handleSubmit(onSubmit)}>
