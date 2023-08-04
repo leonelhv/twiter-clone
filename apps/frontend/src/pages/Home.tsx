@@ -1,7 +1,7 @@
 import { NewTweet } from '../components/NewTweet';
 
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { isLogged as logged, selectUser, syncUser } from '../store/user/userSlice';
+import { isLogged as logged, syncUser } from '../store/user/userSlice';
 import ListTweets from '../components/ListTweets';
 import { useEffect } from 'react';
 
@@ -11,7 +11,7 @@ export default function Home () {
 
 
   const isLogged = useAppSelector(logged)
-  const user = useAppSelector(selectUser)
+
 
   const dispatch = useAppDispatch()
 
@@ -27,7 +27,7 @@ export default function Home () {
       </div>
       <div className='my-12'>
         <div className='px-4'>
-          {isLogged && <NewTweet user={user} />}
+          {isLogged && <NewTweet />}
         </div>
         <ListTweets />
       </div>

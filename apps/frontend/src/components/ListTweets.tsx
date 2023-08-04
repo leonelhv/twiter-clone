@@ -9,21 +9,27 @@ import { isLogged as logged } from "../store/user/userSlice";
 
 interface Props {
   tweetId?: string
+  arrTweets?: Itweet[]
 }
 
-export default function ListTweets ({ tweetId = "" }: Props) {
+export default function ListTweets ({ tweetId = "", arrTweets }: Props) {
 
   const arrayTweets: Itweet[] = useAppSelector(selectArrayTweets)
   const isLogged = useAppSelector(logged)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    getListTweets(tweetId).then((res) => {
-      dispatch(addArrayTweetToList(res))
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, [isLogged, tweetId])
+    if (Array.isArray(arrTweets)) {
+      dispatch(addArrayTweetToList(arrTweets))
+      return
+    } else {
+      getListTweets(tweetId).then((res) => {
+        dispatch(addArrayTweetToList(res))
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }, [isLogged, tweetId, arrTweets])
 
   return (
     <div className="flex flex-col gap-4 w-full">

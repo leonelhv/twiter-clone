@@ -8,6 +8,14 @@ interface GetInfoResponse {
   tweets: Itweet[];
 }
 
-export function getInfoUser (username: string): Promise<GetInfoResponse> {
+export async function getInfoUser (username: string): Promise<GetInfoResponse> {
   return apiClient.get<Response<GetInfoResponse>>(`/user/${username}`).then((response) => response.data.result);
+}
+
+export async function getRepliesUser (username: string): Promise<Itweet[]> {
+  return apiClient.get<Response<Itweet[]>>(`/user/${username}/replies`).then((response) => response.data.result);
+}
+
+export async function getLikesUser (username: string): Promise<Itweet[]> {
+  return apiClient.get<Response<Itweet[]>>(`/user/${username}/likes`).then((response) => response.data.result);
 }

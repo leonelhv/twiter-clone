@@ -10,8 +10,6 @@ export interface Itweet {
   countComments: number;
   tweetFather: string | null;
   createdAt: string;
-  updatedAt: string;
-  __v: number;
   liked?: boolean;
 }
 

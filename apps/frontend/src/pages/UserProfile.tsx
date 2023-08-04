@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import HeaderTimeLine from "../components/HeaderTimeLine";
-import { getInfoUser } from "../services/user.service";
+import { getInfoUser, getLikesUser, getRepliesUser } from "../services/user.service";
 import { useParams } from "react-router-dom";
 import { User } from "../types/user";
 import { imageStatic } from "../utils/imageStatic";
 import { Itweet } from "../types/tweet";
+import ListTweets from "../components/ListTweets";
 
 export default function UserProfile () {
 
@@ -22,14 +23,30 @@ export default function UserProfile () {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    console.log(username)
-    username && getInfoUser(username).then((res) => {
-      setUser(res.user)
-      setTweets(res.tweets)
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, [username])
+    if (activeTab === 0) {
+      username && getInfoUser(username).then((res) => {
+        setUser(res.user)
+        setTweets(res.tweets)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+    if (activeTab === 1) {
+      username && getRepliesUser(username).then((res) => {
+        setTweets(res)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+    if (activeTab === 2) {
+      username && getLikesUser(username).then((res) => {
+        setTweets(res)
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+
+  }, [activeTab])
 
   const handleClick = (index: number) => {
     setActiveTab(index);
@@ -71,7 +88,9 @@ export default function UserProfile () {
               ))}
             </ul>
           </div>
-          <div></div>
+          <div>
+            <ListTweets arrTweets={tweets} />
+          </div>
         </>
       }
     </div>

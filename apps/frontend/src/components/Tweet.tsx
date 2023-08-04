@@ -55,7 +55,7 @@ export default function Tweet ({ tweet }: Props) {
     <Link to={goToTweet()} className='pt-7 cursor-pointer border-t-[0.3px] border-gray-200/20'>
       <div className="flex w-full px-4">
         <div className='w-12 h-12 rounded-full'>
-          <img src={imageStatic(tweet.userId.photo)} alt="" />
+          {tweet && <img src={imageStatic(tweet.userId.photo)} alt="" />}
         </div>
         <div className='flex flex-col gap-1 w-[calc(100%-66px)] ml-4'>
 
@@ -67,7 +67,7 @@ export default function Tweet ({ tweet }: Props) {
             </div>
           </div>
 
-          <span className='text-white block break-words whitespace-pre-line'>{tweet.content}</span>
+          <span className='text-white block break-words whitespace-pre-line pb-5'>{tweet.content}</span>
 
           <ActionsTweet infoTweet={tweet} />
 

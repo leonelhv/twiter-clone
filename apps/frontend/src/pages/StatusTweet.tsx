@@ -53,7 +53,7 @@ export default function StatusTweet () {
       </div>
       {
         isLogged && <div className="px-4">
-          <NewTweet user={infoUser!} reply />
+          <NewTweet reply />
         </div>
       }
       <div className="">

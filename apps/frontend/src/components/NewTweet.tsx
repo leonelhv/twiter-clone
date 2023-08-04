@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { imageStatic } from "../utils/imageStatic";
-import { useAppDispatch } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addTweetToList } from "../store/tweet/tweetSlice";
 
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
@@ -10,7 +10,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { type INewTweet, createTweet } from "../services/tweet.service";
 
 import { useParams } from "react-router-dom";
-import { User } from "../types/user";
+import { selectUser } from "../store/user/userSlice";
 
 
 const defaultValues = {
@@ -18,7 +18,6 @@ const defaultValues = {
 }
 
 interface Props {
-  user: User
   reply?: boolean
 }
 
@@ -26,11 +25,11 @@ interface Props {
 
 const maxContentLength = 280
 
-export const NewTweet = ({ user, reply = false }: Props) => {
+export const NewTweet = ({ reply = false }: Props) => {
   const [content, setContent] = useState("");
   const [porcent, setPorcent] = useState(0);
 
-
+  const user = useAppSelector(selectUser)
 
   const { register, handleSubmit, formState: { isValid } } = useForm<INewTweet>({
     mode: "onChange",
