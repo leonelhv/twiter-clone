@@ -46,7 +46,7 @@ export default function UserProfile () {
       })
     }
 
-  }, [activeTab])
+  }, [activeTab, user])
 
   const handleClick = (index: number) => {
     setActiveTab(index);
@@ -60,7 +60,7 @@ export default function UserProfile () {
           <div className="h-52 bg-[#333639] w-full mt-2">
           </div>
           <div className="-mt-20 px-4">
-            <div className="bg-black rounded-full w-32 overflow-hidden border-2 border-black">
+            <div className="bg-black rounded-full w-32 h-32 overflow-hidden border-2 border-black">
               <img src={imageStatic(user.photo)} alt={`Photo perfil by ${user.username}`} />
             </div>
           </div>

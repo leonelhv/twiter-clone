@@ -46,7 +46,7 @@ export default function ActionsTweet ({ infoTweet }: Props) {
 
 
   return (
-    <div className='flex justify-between text-white text-base'>
+    <div className='flex justify-between text-white text-base py-1'>
       <div className="flex  items-center justify-center group cursor-pointer">
         <span className=" hover:bg-[#0d0f8c1a] group-hover:text-[#6398f1] w-10 h-10 flex items-center justify-center rounded-full">
           <i className="fa-regular fa-comment"></i>

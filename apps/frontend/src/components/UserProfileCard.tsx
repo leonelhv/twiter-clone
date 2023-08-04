@@ -55,7 +55,7 @@ export default function UserProfileCard ({ user, disabledSettings = false, redir
         </div>
       </div>
       {
-        settings && <div className="absolute -top-[130%] text-white border border-white rounded-xl w-full p-4 h-full flex flex-col justify-center items-start">
+        settings && <div className="absolute -top-[130%] bg-black text-white border border-white rounded-xl w-full p-4 h-full flex flex-col justify-center items-start">
           <button className="text-lg font-bold w-full" onClick={logoutUser}>Logout</button>
         </div>
       }

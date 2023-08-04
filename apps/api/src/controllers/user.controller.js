@@ -13,7 +13,7 @@ const getInfoUser = async (req, res) => {
     });
   }
 
-  const tweets = await Tweet.find({ userId: user._id, tweetFather: null }).populate("userId", "username name lastname photo").select("-__v").lean();
+  const tweets = await Tweet.find({ userId: user._id, tweetFather: null }).populate("userId", "username name lastname photo").select("-__v").lean().sort({ createdAt: -1 });
 
   return responseCustom(res, 200, {
     user,
@@ -23,7 +23,7 @@ const getInfoUser = async (req, res) => {
 
 const getRepliesUser = async (req, res) => {
   const { username } = req.params;
-  const user = await User.findOne({ username }).select("-password -email -phone -updatedAt -__v").lean();
+  const user = await User.findOne({ username }).select("-password -email -phone -updatedAt -__v").sort({ createdAt: -1 }).lean();
 
   if (!user) {
     return responseCustom(res, 404, {
@@ -58,6 +58,7 @@ const getLikesUser = async (req, res) => {
       },
     })
     .select("-__v -createdAt -updatedAt -userId -_id")
+    .sort({ createdAt: -1 })
     .lean();
 
   const tweetObjects = tweets.map(({ tweetId }) => ({ ...tweetId, liked: true }));

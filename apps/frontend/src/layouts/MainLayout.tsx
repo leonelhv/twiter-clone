@@ -28,7 +28,12 @@ export default function MainLayout () {
             <Link to={"/home"}>
               <img src={logo} className='w-10 h-10' alt="" />
             </Link>
-            <div className='flex-1'></div>
+            <div className='flex-1 text-white flex flex-col-reverse mb-6'>
+              <Link to={`/${user.username}`} className="flex gap-4 items-center text-xl cursor-pointer rounded-lg pl-4 hover:bg-zinc-900">
+                <i className="fa-regular fa-user text-white" />
+                <button className="rounded-lg py-2 font-normal">Profile</button>
+              </Link>
+            </div>
             {
               isLogged && <UserProfileCard user={user} />
             }
