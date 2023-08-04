@@ -20,6 +20,10 @@ const createTweet = async (req, res) => {
     tweetFather: tweetFather || null
   })
 
+  if (tweetFather) {
+    await Tweet.findByIdAndUpdate(tweetFather, { $inc: { countComments: 1 } });
+  }
+
   const tweetSaved = await newTweet.save()
 
   responseCustom(res, 200, tweetSaved)

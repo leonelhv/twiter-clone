@@ -11,6 +11,7 @@ interface Props {
 
 export default function ActionsTweet ({ infoTweet }: Props) {
 
+
   const [likes, setLikes] = useState<number>(infoTweet.likes)
   const [isLiked, setIsLiked] = useState<boolean>(infoTweet.liked)
 
@@ -46,11 +47,13 @@ export default function ActionsTweet ({ infoTweet }: Props) {
 
   return (
     <div className='flex justify-between text-white text-base'>
-
-      <span className=" hover:bg-[#0d0f8c1a] hover:text-[#6398f1] w-10 h-10 flex items-center justify-center rounded-full">
-        <i className="fa-regular fa-comment"></i>
-      </span>
-      <div className="flex  items-center justify-center group" onClick={e => e.preventDefault()}>
+      <div className="flex  items-center justify-center group cursor-pointer">
+        <span className=" hover:bg-[#0d0f8c1a] group-hover:text-[#6398f1] w-10 h-10 flex items-center justify-center rounded-full">
+          <i className="fa-regular fa-comment"></i>
+        </span>
+        <span className="text-xs text-gray-400 group-hover:text-[#6398f1]" >{infoTweet.countComments}</span>
+      </div>
+      <div className="flex  items-center justify-center group cursor-pointer" onClick={e => e.preventDefault()}>
         <span className={`w-10 h-10 flex items-center justify-center rounded-full ${isLiked && isLogged ? 'bg-[#a309241a] text-[#f54866]' : 'hover:bg-[#a309241a] group-hover:text-[#f54866]'}`} onClick={onLikeToTweet}>
           <i className="fa-regular fa-heart" ></i>
         </span>
