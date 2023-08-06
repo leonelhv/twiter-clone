@@ -27,6 +27,7 @@ BACKEND
 MONGO_URI=""
 JWT_SECRET=""
 NODE_ENV="development"
+FRONTEND_URL="http://localhost:5173"
 ```
 
 FRONTEND
