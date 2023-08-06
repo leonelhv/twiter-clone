@@ -65,7 +65,7 @@ async function createRandomUsers () {
 
 
     resolve({
-      username: username.replace(/\./g, '_'),
+      username: username.replace(/\./g, '_').toLowerCase(),
       email,
       password,
       name,
