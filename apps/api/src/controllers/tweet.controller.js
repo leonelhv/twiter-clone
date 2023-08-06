@@ -104,6 +104,10 @@ const likeToTweet = async (req, res) => {
 
   if (!tweet) throw new ErrorCustom(404, "Tweet not found");
 
+  const existUser = await User.findById(id)
+
+  if (!existUser) throw new ErrorCustom(404, "User not found");
+
   const like = await Like.findOne({ userId: id, tweetId: idTweet });
 
   if (like) {
