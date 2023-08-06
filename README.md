@@ -26,7 +26,7 @@ BACKEND
 ```bash
 MONGO_URI=""
 JWT_SECRET=""
-NODE_ENV=""
+NODE_ENV="development"
 ```
 
 FRONTEND
@@ -35,6 +35,15 @@ FRONTEND
 VITE_API_BASE_URL="http://localhost:3000/api"
 VITE_API_ASSETS_URL="http://localhost:3000"
 ```
+
+## Seed the database
+Only for environment development
+
+```bash
+POST /seeder/users
+POST /seeder/tweets
+```
+
 
 ## Run the project
 
