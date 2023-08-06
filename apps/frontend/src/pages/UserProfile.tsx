@@ -46,7 +46,7 @@ export default function UserProfile () {
       })
     }
 
-  }, [activeTab, user])
+  }, [activeTab])
 
   const handleClick = (index: number) => {
     setActiveTab(index);
