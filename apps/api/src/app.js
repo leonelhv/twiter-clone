@@ -38,7 +38,7 @@ app.use("/api", authRoutes)
 app.use("/api", tweethRoutes)
 app.use("/api", userRoutes)
 if (process.env.NODE_ENV === 'development') {
-  app.use("/seeder", seedRoutes)
+  app.use("/api/seeder", seedRoutes)
 }
 app.use(ErrorHandler)
 

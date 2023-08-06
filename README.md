@@ -40,8 +40,8 @@ VITE_API_ASSETS_URL="http://localhost:3000"
 Only for environment development
 
 ```bash
-POST /seeder/users
-POST /seeder/tweets
+POST /api/seeder/users
+POST /api/seeder/tweets
 ```
 
 
