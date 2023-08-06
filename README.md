@@ -5,7 +5,7 @@
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/en/) 
-- [Pnpm](https://pnpm.js.org/)
+- [Pnpm](https://pnpm.io/)
 
 ## Clone the repository
 
